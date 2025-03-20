@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fjalori Dibran</title>
+    <style>
+        /* Stilet për trupin e faqes */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #71acc0; /* Blu e hapur */
+        }
+        /* Stilimi i kokës së faqes */
+        header {
+            background-color: #4682b4; /* Blu më e errët për kontrast */
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 2em;
+        }
+        /* Kontejneri kryesor */
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        /* Stilimi i kutisë së kërkimit */
+        .search-box {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .search-box input[type="text"] {
+            width: 75%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .search-box button {
+            padding: 10px 20px;
+            background-color: #4682b4;
+            color: rgb(252, 245, 245);
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-left: 15px;
+        }
+        .search-box button:hover {
+            background-color: #4169e1; /* Blu e lehtë gjatë lëvizjes së mausit */
+        }
+        /* Rezultatet e kërkimit */
+        .result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            color: #333;
+        }
+        /* Pjesa e fundit e faqes */
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #4682b4;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        /* Seksioni i figurave */
+        .image-section {
+            margin: 40px 0;
+            text-align: center;
+        }
+        .image-section img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .opinion-box {
+            width: 90%;
+            max-width: 200px;
+            margin: 30px auto;
+            padding: 14px;
+            background: #fff;
+            border: 2px solid #4682b4;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: 0.3s;
+            margin-left: 40px;
+        }
+
+        .opinion-box:hover {
+            background: #f0f0f0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #4682b4;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .skedari {
+            border: 2px solid #333;
+        border-radius: 10px;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+    <script>
+        // Funksioni për kërkimin e fjalës në fjalor
+        function searchWord() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const resultDiv = document.getElementById('result');
+            const dictionary = {
+                'libër': 'Shkrim i shtypur që përmban tekste të ndryshme dhe që është i lidhur në një bllok fletësh me kapak.',
+                'shqip': 'Gjuha që flitet nga shqiptarët.',
+                'det': 'Sipërfaqe e madhe uji e kripur.<br>Deti eshte vendi im i preferuar.</br>',
+                'qiell': 'Hapësira e pafundme mbi tokë.',
+                'mal': 'Pjesë e ngritur e tokës me lartësi të madhe.',
+                'lumë': 'Rrjedhë natyrore e ujit që shkon drejt detit.',
+                'pyll': 'Sipërfaqe e mbuluar me drurë dhe bimësi të dendur.',
+                'shtëpi': 'Ndërtesë e ndërtuar për të banuar.',
+                'shok': 'Person me të cilin kemi marrëdhënie miqësore.',
+                'dashuri': 'Ndjenjë e fortë për dikë ose diçka.',
+                'bukë': 'Ushqim i bërë nga brumi i pjekur.',
+                'mësues': 'Person që jep mësim.',
+                'shkollë': 'Institucion arsimor ku zhvillohet mësimi.',
+                'yll': 'Trup qiellor që shndrit në hapësirë.',
+                'ditë': 'Koha prej lindjes deri në perëndimin e diellit.',
+                'natë': 'Koha kur dielli ka perënduar.',
+                'mik': 'Person që kemi marrëdhënie të afërta dhe të ngrohta.',
+                'fëmije': 'Person i vogël në moshë.',
+                'qytet': 'Vendbanim i madh dhe i zhvilluar.',
+                'fshat': 'Vendbanim i vogël në zonat rurale.',
+                'detyrë': 'Përgjegjësi ose punë për të kryer.',
+                'zog': 'Shpend i vogël fluturues.',
+                'ajër': 'Gaz që mbush atmosferën dhe që ne e marrim me frymëmarrje.',
+                'peshk': 'Kafshë ujore që jeton në dete ose lumenj.',
+                'diell': 'Ylli që ndriçon dhe ngroh Tokën.',
+                'hënë': 'Trupi qiellor që rrotullohet rreth Tokës.',
+                'shëndet': 'Gjendja e mirë fizike dhe mendore.',
+                'lule': 'Pjesa e bimës që prodhon fara dhe është e bukur.',
+                'bari': 'Bimë e ulët që mbulon tokën.',
+                'mikpritje': 'Mirësia dhe kujdesi ndaj mysafirëve.',
+                'punë': 'Veprim ose aktivitet që kryhet për një qëllim.',
+                'kohë': 'Masa e kalimit të ngjarjeve.',
+                'shqiponjë': 'Shpend grabitqar me flatra të mëdha.',
+                'miqësi': 'Marrëdhënie e ngushtë dhe e ngrohtë me dikë.',
+                'ëndërr': 'Përjetim mendimesh ose ndjenjash gjatë gjumit.',
+                'shtëpiake': 'Punë që kryhet në shtëpi.',
+                'trimëri': 'Guxim përballë vështirësive ose rrezikut.',
+                'besë': 'Fjala e dhënë dhe mbajtja e saj.',
+                'urrejtje': 'Ndjenjë e fuqishme kundër dikujt.',
+                'ndihmë': 'Mbështetje ose shërbim për dikë që ka nevojë.',
+                'besim': 'Ndjenjë sigurie dhe bindjeje te dikush ose diçka.',
+                'ndjenjë': 'Gjendje emocionale ose shpirtërore.',
+                'tokë': 'Planeti ku jetojmë.',
+                'ujë': 'Lëngu i qartë dhe i domosdoshëm për jetën.',
+                'kafshë': 'Organizëm i gjallë që nuk është bimë.',
+                'shkop': 'Copë e gjatë dhe e hollë druri.',
+                'ënderrim': 'Procesi i mendimeve të imagjinuara.',
+                'abresh': 'abrash; 1. me flokë e vetulla të bardhëme; me lara në trup (për kuaj): <em>Kalë abrash.</em> <br>2. (fig) njeri i prapë, i vrazhdë: <em>Sa cuc abrashe je!</em></br>',  
+                'açajk': 'haptas; kur diçka bëhet haptas, pra pa fshehur asnjë detaj: <em>Dukët açajk ajë gja.</em>',  
+'ahër': 'ahur; vend strehimi për kafshët: <em>Mshele ahrin se na del gjaja jesht.</em>',  
+'akollas': 'rreth e rrotull: <em>Mos shko akollas se na more ment.</em>',  
+'akshaj': 'gjellëbërës; një person që merret me gatimin e gjellëve për shumë veta: <em>Si çki akshaj s’paskemi pa.</em>',  
+'aksham': 'mbrëmje; fjalë e përdorur nga besimi mysliman për vaktin e mbrëmjes: <em>Hecni mrena se u bë aksham.</em>',  
+'allaj': 'lloj përshëndetje e përdorur: <em>Sa të shajfshin, ni allaj t’madhe t’bashin.</em>',  
+'amon': 'aman; përdoret për të përforcuar shprehjen e pakënaqësisë a të qesëndisë: <em>Amon, se na çmene!</em>',  
+'anej': 'andej; nga ajo anë, në atë vend: <em>Ene unë dë jem anej.</em>',  
+'apet': 'përsëri; edhe një herë tjetër, prapë: <em>Apet e bëne kët gabim?!</em>',  
+'asesëj': 'asisoj; as njëra, as tjetra; diçka e papërcaktueshme: <em>Asht ni njeri asesëj.</em>',  
+'asni': 'asnjë; as edhe një njeri, një send etj.: <em>Meta pa asni lek.</em>',  
+'asqeri': 'ushtar; një person që është i aktivizuar në ushtri: <em>Gjyshi em ka qenë asqer n’kohë t’Zogut.</em>',  
+'avdes': 'abdes; rit mysliman që kryhet para faljes: <em>Shkoi me marr avdes para se me u fal.</em>',  
+'avdeshane': 'banjo; kthinë e vogël me pajisjet për t’u larë: <em>Shko lehu në avdeshane!</em>',  
+'avëjt': 'avit; afoj, e çoj më afër, e sjell më pranë: <em>Avëjtu pak ma knej!</em>',  
+'avllëj': 'avlli; mure rrethuese për oborrin ose një copë toke: <em>Shpit e vjetra n’katun kanë pas gjithmonë avllëj t’nalt.</em>'  ,
+'bafshirë': 'pasqyrë; fletë xhami e lyer nga njëra anë me një shtresë përzierjeje argjendi, zhive etj., që ka vetinë të japë të plotë shëmbëllimin e çdo gjëje që ndodhet përpara saj: <em>Njeft u pae në bafshire se dë çmenësh.</em>',
+    'bajagi': 'shumë; në një sasi të madhe: <em>U lëdha bajagi!</em>',
+    'bastajs': 'bastis; kontrolloj befas e me dhunë në një shtëpi a në një vend tjetër për të gjetur diçka të ndaluar: <em>Si e paskan bastajsun venin?!</em>',
+    'baziben': 'lloj zukurimi; diçka me lule, me ngjyra a me gdhendje të ndryshme: <em>Ki baziben qëka shum’ i bukur.</em>',
+    'begjenajs': 'pëlqej; më duket e mirë a e shijshme diçka, më duket i bukur a i këndshëm dikush: <em>Nuk më begjenajse hiç!</em>',
+    'bele': 'problem; çështje e ndërlikuar që diskutohet a që shtrohet për t’u zgjidhur: <em>Na gjeti bele e madhe.</em>',
+    'bidat': 'rregull; ligj i ri: <em>Ça asht mor ki bidat kshu?!</em>',
+    'bilizajk': 'byzylyk; rreth prej floriri, prej kocke etj.: <em>Sa bilizajk të bukur paske!</em>',
+    'birinxhi': 'shumë mirë; cilësi ose veti shumë të mira: <em>Majkun zgjidhe birinxhi.</em>',
+    'bjet': 'bleta; mizë e dobishme, me krahë e trup të mbuluar me push, që bën mjaltin e dyllin: <em>Mos e trazo bjetën!</em>',
+    'bualk': 'dërrasë e vogël; letër druri, që nxirret duke sharruar një trung për së gjati: <em>Shkruj në kët bualk!</em>',
+    'caftëjn': 'cofëtinë; ngordhësirë, kërmë: <em>Ajë kafsh ishte caftëjn.</em>',
+    'callajng': 'barku i fryrë: <em>T’paska del mulla si callajng!</em>',
+    'calli': 'cili; përdoret kur pyesim drejtpërdrejtë ose tërthorazi për një frymor ose për një send: <em>Calli prej jush e kishte bë kët xha?</em>',
+    'cof': 'ngordh; pushon së jetuari (kafsha): <em>Kishte cof lëpa.</em>',
+    'coftëjn': 'cofëtinë; ngordhësirë, kërmë: <em>Ajë kafsh ishte coftëjn.</em>',
+    'cop herë': 'vizitë: <em>Hajde t’shkëjm ni cop herë ke mixha.</em>',
+    'cuc': 'vajzë; fëmijë femër; femër deri në moshën e pjekurisë a e pamartuar: <em>Shëjfe rrugën oj cuc!</em>',
+    'cull': 'fëmijë: 1. djalë ose vajzë në moshë të vogël: <em>Sa cull ke?</em> 2. (fig) njeri i papjekur e i papërvojë në jetë: <em>Pash zotin mos bën si cull!</em>',
+    'çafë': 'qafë; pjesa që bashkon kokën me trupin e njeriut a të kafshës: <em>Më dhem shumë çefa!</em>',
+    'çajë': 'ajo; tregon një frymor a një send të gjinisë femërore larg folësit: <em>Çajë asht cuca ime!</em>',
+    'çalldis': 'tingëllon; lëshon tingull kur e godasim: <em>Çalldisin lëdrat.</em>',
+    'çame': 'e çarë; hapësirë e ngushtë për së gjati a vend i hapur tejpërtej: <em>Pse ke vesh kto pantolle t’çame?</em>',
+    'çapoj': 'çaloj; eci duke anuar mbi njërën këmbë ose mbi të dyja këmbët: <em>Nuk çapon magjeri prej veshve.</em>',
+    'çataj': 'aty; në një vend larg meje, por afër bashkëbiseduesit ose pranë një vendi tjetër të njohur: <em>Çataj e ke, a nuk e shef?</em>',
+    'çatoj': 'aty; në një vend larg meje, por afër bashkëbiseduesit ose pranë një vendi tjetër të njohur: <em>Çatoj e ke, a nuk e shef?</em>',
+    'çef': 'qafë; pjesa që bashkon kokën me trupin e njeriut a të kafshës: <em>Maje çefën drejt!</em>',
+    'çekmez': 'sirtar; kuti pa kapak e me dorezë, që futet e nxirret në një orendi tjetër: <em>Maji senet në çekmeze.</em>',
+    'çen': 'qen; kafshë shtëpiake, që mbahet për të ruajtur shtëpinë a bagëtinë, për gjah etj.: <em>Ki qëka si çen stani.</em>',
+    'çënoj': 'çanak; pjatë ose tas për të shërbyer gjellën: <em>Fute çorbën në çënoj.</em>',
+    'çep': 'qep; 1. kap me pe të shkuar në gjilpërë anët e copave prej pëlhure, prej cohe, prej lëkure etj: <em>Çepi pantollët se të qëkan ça.</em> 2. (fig) <em>Çepe gëjën!</em>',
+    'çepë': 'qepë; perime me gjethe si gyp i gjatë e i hollë, që nxjerr lule të vogla dhe fara të imëta dhe që bën kokë nën dhe: <em>Nuk prishet desma për ni çep.</em>',
+    'çeramide': 'tjegull; pllakë e hollë për të mbuluar çatitë e ndërtesave: <em>Mloje çatajn me çeramide.</em>',
+    'çërb': 'çorbë; 1. supë e trashë dhe zakonisht me përbrendëse bagëtish: <em>Qëka çërbë e keçe.</em> 2. diçka e përzier pa rregull e pa shije, diçka e ngatërruar dhe e paqartë: <em>E bëne punën çërb.</em>',
+    'çikman': 'dollap i madh në dhomë i mbyllur me kapak: <em>Mshele çikmanin!</em>',
+    'çikmek': 'shul; dru i trashë a shufër metali e lëvizshme, që shërben për të mbyllur portën ose dritaren përbrenda: <em>Veja çikmekun portës!</em>',
+    'çish': 'çfarë; përdoret kur pyesim për natyrën, llojin, tiparet ose veçoritë e dikujt a të diçkaje etj.: <em>Çish thae?</em>',
+    'çitu': 'këtu; në një vend të caktuar, afër nesh: <em>Ulu çitu!</em>',
+    'çose': 'burrë pa qime në fytyrë: <em>S’e sheh që asht çose?!</em>',
+    'dajek': 'dajak; shkop i gjatë e i trashë: <em>A e don ni dajek të majr?</em>',
+    'dallap': 'dollap; 1. Orendi për të vendosur gjëra brenda si rroba, enë etj.: <em>Vej ent në dallap!</em> 2. dritare: <em>Dil e shëjf në dallap a thkati kush.</em> 3. mjet për pjekjen e kafesë: <em>Pjeku kafen në dallap.</em>',
+    'darit': 'dhuroj, i jap dikujt diçka (para): <em>Të hënën daritet nusja.</em>',
+    'dëfter': 'fletore; disa fletë të lidhura bashkë në mes dy kapakësh: <em>Shkruj në defter!</em>',
+    'dëftoj': 'tregoj; i nxjerr përpara dikujt një gjë për ta parë: <em>Çish ka zemra e dëfton ftajra.</em>',
+    'deja': 'daja; vëllai i nënës: <em>Ai është deja im.</em>',
+    'dekëjk': 'çast; kohë shumë e shkurtër: <em>Nuk rri ma asni dakëjk.</em>',
+    'dëkërr': 'dokërr; copë kocke a diçka tjetër e fortë: <em>Ata lunin shkop e dëkërr.</em>',
+    'demel': 'dembel; që nuk ka dëshirë të punojë: <em>Ça demeli si asht ki shoku em!</em>',
+    'dënoj': 'pakësoj; zvogëloj numrin, vëllimin a sasinë e diçkaje: <em>Dënoje pak tufën e dhenve.</em>',
+    'dëra': 'dora; gjymtyrë e trupit të njeriut: <em>Nuk e preka me dër.</em>',
+    'dërza': 'doreza; veshje dore prej leshi, meshini etj.: <em>Gjishja thuri dërza për mu.</em>',
+    'desëm': 'dasmë; festë me rastin e martesës: <em>Të hëngshim desmën!</em>',
+    'dete': 'baba; prindi mashkull kundrejt fëmijëve të vet, atë: <em>Or dete, m’u hum lëpa në mal.</em>',
+    'dexha': 'daja; vëllai i nënës: <em>Ai është dexha im.</em>',
+    'di': 'dy; numëror: <em>Ma i vëgli asht di vjeç.</em>',
+    'dilli': 'dielli; trup qiellor që ndriçon dhe ngroh Tokën: <em>Dilli sot ka dalë shumë herët dhe ka djegë majsrin në arë.</em>',
+    'dimëjt': 'dymbëdhjetë; numëror: <em>Viti ka dimëjt muj.</em>',
+    'disha': 'dija; kam njohuri ose të dhëna për dikë a për diçka: <em>E disha se dë vish.</em>',
+    'divanhone': 'paradhomë, ballkon i mbuluar: <em>Rregulloje mirë divanhonen!</em>',
+    'divon': 'divan; kolltuk, shtrat i ngushtë anës murit të dhomës: <em>U ul në divon.</em>',
+    'dizet': 'dyzet; numëror: <em>Ishin mbledh dizet vet.</em>',
+    'dorë': 'dëborë; reshje me kristale të bardha: <em>Shumë dorë paska ra!</em>',
+    'dredhza': 'luleshtrydhe; një frut i vogël i kuq, me lëkurë të njomë dhe me shumë fara në sipërfaqe, i ëmbël dhe aromatik: <em>Dredhzat ishin pjek.</em>',
+    'du': 'dua; kam një ndjenjë dashurie, miqësie e dhembshurie për dikë a për diçka: <em>Sa e du cucën teme!</em>',
+    'due': 'dua; kam një ndjenjë dashurie, miqësie e dhembshurie për dikë a për diçka: <em>Sa e due cucën teme!</em>',
+    'durt': 'duart; gjymtyrët e trupit të njeriut: <em>Nuk e zuna me dur.</em>',
+    'dhallt': 'dhallë; kos i holluar me ujë: <em>M’jep pak dhallt!</em>',
+    'dhandër': 'dhëndër; djali që po martohet ose që sapo është martuar: <em>U bëfsh dhondër!</em>',
+    'dhei': 'dheu; shtresa e sipërme e kores së Tokës: <em>A të muloftë dhei!</em>',
+    'dhëjt': 'dhjetë; shifra dhjetë (10): <em>Punon sa për dhëjt.</em>',
+    'dhelpën': 'dhelpër; kafshë grabitqare e shkathët e dinake: <em>Kishte hangër dhelpna di pula.</em> 2. (fig) njeri shumë dinak: <em>Asht ni dhelpën ai…</em>',
+    'dhem': 'dhëmb; ndiej në trup diçka që më mundon: <em>I dhem shumë e vramja.</em>',
+    'dhgajll': 'thëngjill; 1. copë e vogël druri a qymyri e ndezur mirë: <em>S’paska met asni dhgajll në sëb.</em> 2. (fig) njeri të cilit nuk i kuptohet qëllimi që ka: <em>Paske qenë ni dhgajll i mulum!</em>',
+    'dhom': 'dhëmbë; eshtrat e vogla të ngulura në të dyja nofullat, që i shërbejnë njeriut ose kafshës për të copëtuar e për të përtypur ushqimet: <em>Mos m’i zbardh dhomt ashtu!</em>',
+    'dham': 'dhëmbë; eshtrat e vogla të ngulura në të dyja nofullat, që i shërbejnë njeriut ose kafshës për të copëtuar e për të përtypur ushqimet: <em>Mos m’i zbardh dhomt ashtu!</em>',
+    'edepsëz': 'i pacipë, që nuk ka fare turp: <em>Ik mor edëpsëz!</em>',
+    'egjër': 'elb, bimë barishtore që përdoret për një lloj kafeje, birre etj.: <em>Si t’i rrajsësh me egjër kta të shkretë.</em>',
+    'elp': 'elb; bimë njëvjeçare, me kalli si të grurit, që mbillet zakonisht për tagji: <em>Ki asht elp i egjër.</em>',
+    'estrafkulla': 'larg qoftë; fjalë që përdoret nga besimtarët myslimanë: <em>Estrafkulla sa ke hangër!</em>',
+    'ezhdërha': 'kuçedër; figurë e tregimeve ose e përrallave popullore: <em>Dukej si një ezhdërha nga larg.</em>',
+    'fëjk': 'fik; shuaj zjarrin, dritën etj: <em>Ajo fëjku dritën.</em>',
+'fëjs': 'fut; e vë ose e çoj dikë a diçka brenda në një vend të mbyllur, të fshehtë a të mbrojtur: <em>E fëjti ne xhep.</em>',
+'fëjs': 'fis; grup njerëzish që kanë të njëjtin gjak: <em>Janë shumë fëjs i math.</em>',
+'fajs':  'fis; grup njerëzish që kanë të njëjtin gjak: <em>Janë shumë fëjs i math.</em>',
+'fëla': 'fola; kam aftësinë për të shqiptuar fjalë: <em>I fëli shumë ashpër.</em>',
+'felek': 'fat; fuqi e panjohur që mendohet se percakton gjithcka që i ndodh njeriut në jetë: <em>Vish jelekun e prajt felekun.</em>',
+'fërgjëj': 'fërgoj; gatuaj me yndyrë, duke e përzier derisa të skuqet: <em>Ajo fërgjëj voe për mgjes.</em>',
+'ferman': 'urdhër; detyrë që jepet nga një organ më i lartë, nga një epror etj. Dhe që duhet zbatuar pa kundërshtim: <em>Ki ferman duhet zbatu.</em>',
+'fertomë': 'furtunë; dukuri natyrore që shkaktohet nga shpejtësia e erës: <em>Ishte fertomë e madhe atë ditë.</em>',
+'fesat': 'ngatërresë/intrigë; veprim që bëhet me qëllim të keq prapa krahëve të dikujt: <em>Tek pragu u zu fesati.</em>',
+'fi': 'fle; kur je në gjumë: <em>Fi herët se dë ngrehësh nesër herët.</em>',
+'fjek': 'flak; e hedh diçka tutje menjëherë e me forcë: <em>Fjeke përtoke se s’ka ç’të duhet!</em>',
+'fjekë': 'flakë; valë e ndritshme gazi ose avulli të ndezur, zakonisht e kuqe, që del lart nga zjarri: <em>Paska mor fjek shpaja e Filan Fistekut.</em>',
+'fjet': 'fletë; krah shpendi ose insekti: <em>Fjetët e zëgut ishin dëmtu.</em>',
+'fjutur': 'flutur; kandërr fluturuese, me katër krahë të mbuluara me luspa të imëta si pluhur e me ngjyra të ndryshme: <em>Kjë fushë paska shumë fjutra.</em>',
+'fkas': 'thërres; i flas dikujt me zë të lartë, që të më përgjigjet, që të më vijë pranë etj.: <em>I fkati por nuk e ngjoi.</em>',
+'flliç': 'fëlliq; bën pis diçka: <em>Ishte flliç nga krëja te kamt.</em>',
+'fremë': 'frymë; ajri që thithim e nxjerrim nga mushkëritë: <em>Kishte probleme me fremën.</em>',
+'Froj': 'fryj; nxjerr frymën me vrull drejt diçkaje, çoj një rrymë ajri mbi të: <em>Froj kafes se asht e nxehtë.</em>',
+'fraj': 'fryj; nxjerr frymën me vrull drejt diçkaje, çoj një rrymë ajri mbi të: <em>Froj kafes se asht e nxehtë.</em>',
+'frushkë': 'thikë; mjet i vogël me prese të vogël metali e me dorezë: <em>Ai mori frushkën për të prerë bukën.</em>',
+'Fteku': 'kujtohu; të bie ndërmend diçka që ke parë ose degjuar më parë: <em>Iu ftek se ku e kishte pa ma para.</em>',
+'ftere': 'tigan; enë e rrumbullakët metali, me buzë të ngritura dhe me bisht, që përdoret për të skuqur a për të gatuar: <em>Vene fterën në zerm.</em>',
+'ftoft': 'ftohtë; që ka temperaturë të ulët: <em>Qëka shumë ftoft.</em>',
+'ftue': 'ftua; pemë që bën kokrra të mëdha e të forta në ngjyrë të verdhë: <em>Sa më hahet ni ftue!</em>',
+'fug': 'hidh; flak dikë a diçka ose e shtyj në një drejtim të caktuar: <em>Fugi llomët në kosh.</em>',
+'fugj':'hidh; flak dikë a diçka ose e shtyj në një drejtim të caktuar: <em>Fugi llomët në kosh.</em>',
+'furrojk': 'furrik; vend si fole e madhe me bar ose me kashtë, ku shpendët shtëpiakë bëjnë vezët dhe çelin zogjtë: <em>Furrojku ishte mush pjët me voe.</em>',
+'furrajk':'furrik; vend si fole e madhe me bar ose me kashtë, ku shpendët shtëpiakë bëjnë vezët dhe çelin zogjtë: <em>Furrojku ishte mush pjët me voe.</em>',
+'galiba': 'ndoshta; përdoret për të shprehur dyshimin ose mundësinë për diçka: <em>Galiba vjen sët masdite.</em>',
+'gët': 'gotë; enë e vogël dhe e thellë, zakonisht prej qelqi: <em>Më merr një gët me ujë dhe mu.</em>',
+'grajfi': 'mburrem; lavdëroj veten para të tjerëve: <em>Shumë grajfi Filani në konak.</em>',
+'grehu': 'ngrihu; i kërkoj dikujt që të ngrihet nga vendi ku është ulur: <em>Grehu prej ktu se dë ulem un’.</em>',
+'grësh': 'fasule; bimë bishtajore njëvjeçare, me kërcell përdredhës: <em>Sonte për darkë kemi grësh.</em>',
+'grezhd': 'grazhd; vend i rrethuar brenda në një stallë ose pranë saj, ku u hidhet ushqimi kafshëve: <em>Çoje ushqimin e metun në grezhd.</em>',
+'grikholla': 'pushkë; armë zjarri me tytë të gjatë që mbahet në krah. <em>Të lumtë grikholla!</em>',
+'grikse': 'grykëse; veshja e sipërme dhe e gjatë prej pëlhure, e hapur përpara ose prapa, që mbahet nga vajzat në shkollë ose në punë: <em>Msusja kishte veshur grikse sët.</em>',
+'grraç': 'zhguall breshke; E kishte shpajnën si grraç.</em>',
+'grue': 'grua; njeri i seksit femëror: <em>Po vite ni njeri dhe ni grue.</em>',
+'gugare': '(fig) bisedoj; flas me një njeri a me shumë njerëz të tjerë për një çështje: <em>Dhe kjo Dibra bën gugare.</em>',
+'guliç': 'lakuriq; që nuk ka asnjë rrobë në trup: <em>Ishte guliç fare.</em>',
+'gulugutka': 'luleshtrydhe; barishte me lule te bardha, që bën kokrra si të manaferrës, por më të mëdha, të tulta, të kuqe, të ëmbla: <em>Na pru babi një qese me gulugutka.</em>',
+'gjal': 'bir; djali kundrejt prindërve të vet: <em>Merre gjalin nga kopshti.</em>',
+'gjel': 'bir; djali kundrejt prindërve të vet: <em>Merre gjalin nga kopshti.</em>',
+'gje': 'dje; në ditën para të sotmes: <em>Gje ra shumë shaj.</em>',
+'gjegs': 'djegës; që të djeg kur e ha: <em>Ha ni spece gjegse.</em>',
+'gjerdh': 'gardh; thurimë përqark një kopshti, një oborri etj.: <em>Mos i len delet të delin prej gjerdhi!</em>',
+'gjers': 'djersë; lëng i tejdukshëm si ujë, që del nga disa gjëndra të nënlëkurës kur bën shumë nxehtë: <em>Më kanë mulu gjerst!</em>',
+'gjet': 'bleta; mizë e dobishme, me krahë e trup të mbuluar me push, që bën mjaltin e dyllin: <em>Mos e trazo gjetën!</em>',
+'gjeth': 'djathë; bulmet i fortë, që bëhet duke zënë qumështin me maja: <em>Sa më hahet bukë me gjeth!</em>',
+'gjisht': 'gisht; secili prej pesë zgjatimeve në fund të dorës ose të këmbës së njeriut: <em>Kam vra ni gjisht me çakajç.</em>',
+'gjojë': 'gojë; organ në pjesën e poshtme të fytyrës, që ka nofullat, dhëmbët, gjuhën, buzët dhe që shërben për të ngrënë, për të pirë etj.: <em>Mshele at’ gjojë!</em>',
+'gjuj': 'bluaj; e bëj miell (drithin) a pluhur (diçka tjetër): <em>Shko e gjuj majllin në mullaj!</em>',
+'gjur': 'gur; lëndë e fortë e thyeshme dhe e patretshme, që gjendet brenda tokës ose sipër saj dhe që përdoret në ndërtim: <em>Hiqi gjurt nga rrugja.</em>',
+'haber': 'lajm; njoftim i shkurtër: <em>A ke naj haber për mu?</em>',
+'hae': 'haje; përtype dhe kapërdije diçka për t’u ushqyer: <em>Hae supën e mos u qaj.</em>',
+'hali': 'vegjëli; shtresat e gjera e të varfra të popullit: <em>Ban gajret, mori hali.</em>',
+'hallallshtëjsem': 'i jap hallalin dikujt, përshëndetem për të fundit herë me dikë: <em>U hallallshtëjsem me gjishen.</em>',
+'hanë': 'hënë; trup qiellor që rrotullohet rreth Tokës: <em>Fmija pa nanë si nata pa hanë.</em>',
+'hapsane': 'burg; ndërtesë e posaçme, k mbahen të dënuarit me heqje të lirisë: <em>Ra në hapsane.</em>',
+'harasan': 'gëlqere; lëndë e ngurtë dhe e bardhë, që përftohet nga djegia e gurëve që përmbajnë këtë lëndë, e cila përdoret në ndërtim: <em>Hidh ma shumë harasan.</em>',
+'hatër': 'anësi; përkrahje me anësi: <em>Nuk po maj asni me hatër.</em>',
+'hatikat': 'respekt; ndjenja e vlerësimit për dikë: <em>Dalin e fëlin me hatikat.</em>',
+'haxhek': 'oxhak; ndërtim i posaçëm në anë të një dhome a në një ndërtesë, me vatër a me vend ku zihet zjarri dhe me pjesën e hapur deri mbi çati, nga del tymi jashtë: <em>Qëka zanë haxheku!</em>',
+'hazbi': 'vullnetar; ai që e kryen një punë, një detyrë etj. vullnetarisht: <em>Dibra mbetet prap hazbi.</em>',
+'hiki': 'iki; largohem nga një vend, vete diku: <em>Hiku me bisht ndër shalë.</em>',
+'hismet': 'hyzmet; shërbim; përkujdesje: <em>Un’ i bëj hismet gjishit tim.</em>',
+'hitha': 'hithra; bimë e egër, që e ka kërcellin dhe gjethet plot me qime djegëse: <em>Bëj ni pët me hitha.</em>',
+'huj': 'e huaj; që është i dikujt tjetër: <em>Pse i fële vocit t’huj!</em>',
+'hujç': 'gabim; Më shkëj kama hujç.</em>',
+'hull': 'afroj; e çoj më afër, e sjell pranë: <em>Hullu pak ma knej.</em>',
+'hup': 'humb; nuk e kam më dikë a diçka dhe nuk e di ku është: <em>A ke hup xha?</em>',
+'huzur': 'rehati; gjendje pa shqetësime e pa mundime, tërësia e kushteve për të jetuar mirë e pa mungesa: <em>Lan punt e po rrinë në huzur.</em>',
+'ibret': 'i keq/ pis; i bën një kritikë dikujt: <em>Qëke bë për ibret!</em>',
+'idhnak': 'zemërak; njeri qe zemërohet shpejt dhe mban inat: <em>Ishte nje njeri idhnak.</em>',
+'ihtijar': 'pleqëri; mosha e njeriut kur është plak: <em>Beba im asht ba ihtijar, s’ka ma fuqi me punu si përpara.</em>',
+'ilbek': 'i paster/i kthjellet; <em>Sot çilli qëka ilbek.</em>',
+'ilet': 'epilepsi; sëmundje e pashërueshme që të zë herë pas here: <em>Ishte me ilet.</em>',
+'ilham': 'vendim; fjalë nga turqishtja që është vendim gjyqi: <em>Sët dul ni ilham i ri.</em>',
+'imam': 'hoxhe; hoxhe qe drejton lutjet e besimtarëve në xhami: <em>Imami thirri ezanin.</em>',
+'imdat': 'ndihmë; Po nuk dërguat n’imdat, do te vije Dibra n’Beligrat: <em>Po nuk dërguat n’imdat, do te vije Dibra n’Beligrat.</em>',
+'irem': 'problem; dikush që ka probleme me zemrën: <em>Gjyshi nuk munet me ec shumë, se ka irem në zemër.</em>',
+'iriç': 'iriq; kafshë me gjëmba: <em>Desh shkela mbi nje iriç.</em>',
+'isan': 'njeri; <em>Nuk u bëne asnjer isan!</em>',
+'islihat': 'këshillë; vend per pajtim: <em>Shqipërinë n’islihat e du.</em>',
+'ismet': 'shërbim; për të mirë të dikujt a të diçkhe: <em>Ajo i bëni ismet majkut.</em>',
+'ispat': 'vërtetoj; Duhet me ispat që s’ka faj ai njeri: <em>Duhet me ispat që s’ka faj ai njeri.</em>',
+'izën': 'leje; fjalë nga turqishtja që përdoret për të marrë leje për të ikur: <em>Ai kërkëj izen për të hik.</em>',
+'jargjën': 'jorgan; mbulojë për të fjetur, me dy faqe bezeje, e mbushur me pambuk a me lesh dhe e qepur kryq e tërthor: <em>Merr jargjenin e madh për sot.</em>',
+'jastëjk': 'jastëk; cope e mbushur me sfungjer, pupla, pambuk etj., për të mbështetur kokën: <em>Sa jastëjk i butë!</em>',
+'jastajk':'jastëk; cope e mbushur me sfungjer, pupla, pambuk etj., për të mbështetur kokën: <em>Sa jastajk i butë!</em>',
+'jazik': 'jazëk; turp, faqja e zezë: <em>Jazik të qoftë për atë që i bëre mamit.</em>',
+'jë': 'jo; përdoret për të mohuar, për të kundërshtuar, për të mos pranuar etj. atë që është thënë më parë: <em>Jë, nuk e du at dhuratën tane.</em>',
+'jem': 'jam; folje që tregon se je diku ose je në një gjendje te caktuar: <em>Jem i mërzitun prej babit.</em>',
+'jënxh': 'jonxhë; barishte shumëvjeçare, me gjethe treshe, me lule ngjyrëvjollcë, që përdoret për të ushqyer bagëtinë: <em>Jënxha është rritur shumë.</em>',
+'jerm': 'kllapi; gjendje e një njeriu kur humbet vetëdijen nga zjarrmia e larte apo flet në gjumë: <em>Je tu fël komplet jerm.</em>',
+'jesht': 'jashtë; në vendin a në hapësirën që nuk është brenda kufijve të përcaktuar: <em>Dil jesht!</em>',
+'ka': 'nga; përdoret për të pyetur ku ndodhet një vend a një gjë: <em>Ka i bie për t’shku n’Dibër?</em>',
+'kacëj': 'kaci; lopatëz prej metali, që përdoret për të marrë prush ose hi nga vatra: <em>Shko shkune kacëjn!</em>',
+'kacup': 'gur i vogël; lëndë e fortë me përmasë jo të madhe: <em>Gjej një kacup e ma jep mua.</em>',
+'kadal': 'ngadalë; me shpejtësi të vogël, pa u nxituar: <em>Kadal bre, mos u ngut kaq shumë!</em>',
+'kajuke': 'xhakete; veshje e sipërme prej zhguni për burra: <em>Sa e bukur kjo kajuke!</em>',
+'kalem': 'laps; shufër e hollë grafiti me të cilën shkruajmë: <em>M’u thye kalemi në klasë.</em>',
+'kallaballëjk': 'kallaballëk; shumicë njerëzish: <em>Kishte kallaballëjk në pazar.</em>',
+'kalp': 'kalb; bëj diçka të prishet, duke e mbajtur në një vend të mbyllur a me lagështirë: <em>U kalp çilimi në shaj.</em>',
+'kamë': 'këmbë; pjesë trupi me të cilën njeriu ecën: <em>Po më dhem shumë kama.</em>',
+'kandar': 'peshore; mjet për të matur peshën e turpave: <em>Sa kushton ni kandar?</em>',
+'karasajnë': 'kajmak/ajkë; cipë e yndyrshme sipër qumështit: <em>Çdo ditë e haj unë karasajnën e qumshtit.</em>',
+'kashmere': 'shaka; fjalë që të bëjnë për të qeshur ose që ngacmojnë pa të keq: <em>Mos bëj kashmere tani.</em>',
+'katun': 'katund/fshat; qendër e vogël banimi ku njerëzit merren me bujqësi dhe blegtori: <em>Jam rrit n’katun, po tani jam shpërngul n’qytet.</em>',
+'kina': 'rrobë; copë për të krijuar veshje: <em>Ku i ke marrë kto kina?</em>',
+'kinxh': 'qengj; i vogli i deles pa mbushur vitin: <em>Bab, a e shef sa i bukur asht ky kinxh?</em>',
+'kollaj': 'e lehtë/e thjeshtë; jo e ndërlikuar, nuk është e vështirë: <em>Kjo është kollaj për të gjithë.</em>',
+'konak': 'bujtinë; dhomë banimi: <em>Hajde ban konak te na sonte, mos rri rrugëve!</em>',
+'korrent': 'rrymë elektrike; lëvizje e drejtuar e ngarkesave elektrike: <em>Sot na ka hik korenti prap.</em>',
+'korrlik': 'shkop; dru i hollë dhe i gjatë që përdor bariu: <em>Kthehu merr korrlikun se harrova.</em>',
+'kosur': 'kusur; të hollat që i kthehen blerësit, kur sendi i blerë kushton më pak: <em>Më thkej 100 lekë kosur.</em>',
+'krahën': 'krehër; mjet prej plastike që përdoret për të krehur flokët: <em>A mbarove me at krahën?</em>',
+'kraje': 'kokë; pjesa e sipërme e trupit të njeriut dhe të kafshëve, ku ndodhen fytyra, goja, truri etj: <em>Më dhem shumë krëja, dë pushëj pak.</em>',
+'krëje': 'kokë; pjesa e sipërme e trupit të njeriut dhe të kafshëve, ku ndodhen fytyra, goja, truri etj: <em>Më dhem shumë krëja, dë pushëj pak.</em>',
+'krëjp': 'kripë; lëndë e bardhë kristalore dhe e tretshme, që përdoret për t’i dhënë shije gjellës: <em>E paske mëjt në krejp!</em>',
+'krohën': 'krehër; mjet prej plastike që përdoret për të krehur flokët: <em>A mbarove me at krohën?</em>',
+'kshaj': 'qershi; kokrra të vogla, të kuqe a të verdha dhe me bërthamë, që rriten në pemë: <em>Kshajat qëkan bë të majra kët vit.</em>',
+'kshu': 'kështu; në këtë mënyrë ose në këtë gjendje: <em>Kshu bëhet kjo punë.</em>',
+'ksulë': 'kësulë; lloj kapeleje strehë, zakonisht prej pëlhure: <em>Vnoje ksulen se bën ftoft jashtë!</em>',
+'kulumona': 'manaferra; kokrra të zeza si të manit, që rriten në shkurre: <em>Ua çfarë kulumonash paska ktu!</em>',
+'kum': 'kam; zotëroj një pronë, para etj: <em>Kum për t’shku te shpia e shokut nesër.</em>',
+'kumpire': 'patate; perim që rritet në tokë: <em>E mbushëm koritën me kumpire për dimër.</em>',
+'kurëjt': 'govatë; enë e madhe prej plastike që përdoret për të larë: <em>A ma ep pak kurëjtën?</em>',
+'kurit':'govatë; enë e madhe prej plastike që përdoret për të larë: <em>A ma ep pak kurëjtën?</em>',
+'kurt': 'oborr; vend me hapësirë dhe gjelbërim: <em>Hajde lujm në kurt!</em>',
+'kushar': 'hambar; vend ose arkë, ku mbahet mielli, drithi etj: <em>Këtë vit kushari u mush qët.</em>',
+'lagavajë': 'lagashi; bie shiu pa pushim: <em>Bie shaju lagavajë.</em>',
+'lama': 'lëmë; shesh i vogël me një strumbullar në mes, ku vihen të lashtat për t’u shirë me kuaj: <em>Shaje grunin në lamë!</em>',
+'lang': 'lëng; lëndë e hollë rrjedhëse e pa formë: <em>I pëlçen shumë lëngu i mollës.</em>',
+'largj': 'larg; në një vend të largët: <em>Shkolla ime asht shumë largj.</em>',
+'laznor': 'i përkëdhelur: <em>Gjel laznor.</em>',
+'lëfka': 'zemër; (fig) qendër e ndjenjave dhe e dëshirave më të thella, e gjendjes shpirtërore etj.: <em>Lëfka e nanës ti!</em>',
+'lekën': 'lakër; perime me gjethe të gjera, të mbledhura e të ngjeshura në një kokë të madhe: <em>Kishte bë gjellë me lekën.</em>',
+'lëpa': 'lopë; kafshë shtëpiake ripërtëritëse dythundrake, që mbahet për qumështin, për mishin e për lëkurën: <em>Dil e kullot lëpën.</em>',
+'ligjen': 'legen; enë e madhe e rrumbullakët dhe mjaft e thellë, që shërben për të larë etj.: <em>E mushi ligjenin me ujë.</em>',
+'lugjë': 'lugë; send metalik që përdoret për të ngrënë: <em>I ra lugja në tokë.</em>',
+'llahure': 'lahur; pëlhurë e hollë njëngjyrëshe për petka grash: <em>Kjo bluzë të rri si llahure.</em>',
+'llahus': 'lehonë; grua që sapo ka lindur fëmijë ose gjatë disa ditëve pasi ka lindur fëmijën: <em>Nuk del dot sepse është llahus.</em>',
+'llallangëja': 'ushqim i bërë me brumë të hollë pa maja, që gatuhet në një tigan: <em>Ne po shkojmë të bëjmë llallangëja.</em>',
+'llamarëjn': 'llamarinë; teneqe e trashë, që përdoret për të mbuluar çatitë, për ullukë dhe enë të ndryshme: <em>Ma ep at llamarëjnën atëj.</em>',
+'llamatinë': 'llambë; poç qelqi, me fije metalike a me gaz, që ndriçon me rrymë elektrike ose përdoret si pajisje në aparate të ndryshme: <em>Qëka djeg llamatina.</em>',
+'llapa': 'gjuha; organ i njeriut që ndodhet në gojë; njeri që flet shumë dhe përciptazi: <em>I është zgjatur shumë llapa atij.</em>',
+'llatëjng': 'veshje tradicionale: <em>Kërcimtarët ishin veshur me llatëjnga në shfaqje.</em>',
+'llatajng': 'veshje tradicionale: <em>Kërcimtarët ishin veshur me llatëjnga në shfaqje.</em>',
+'llavesh': 'çallavesh; njeri i paaftë, shkatërrraq: <em>Qenka një llavesh ky!</em>',
+'llomë': 'llambë; mjet ndriçimi me lëndë djegëse dhe me fitil, që mbulohet me një poç të gjatë prej qelqi: <em>Mushe llomën me vajguri.</em>',
+'llome': 'mbeturinë; 1. ato që kanë mbetur nga diçka e shkatërruar: <em>Hidhi ato llomet në kosh!</em>, 2. (fig) njeri i keq: <em>Sa llome si je!</em>',
+'magjer': 'gomar; kafshë me veshë të gjatë, që mbahet për ngarkesë: <em>Mushe magjerin me bar.</em> 2. (fig) njeri i trashë nga mendja: <em>Ik more magjer!</em>',
+'mair': 'mirë; me cilësi të mirë ose ashtu si duhet: <em>A ke qanë mair me shnet?</em>',
+'mëir':'mirë; me cilësi të mirë ose ashtu si duhet: <em>A ke qanë mëir me shnet?</em>',
+'meir':'mirë; me cilësi të mirë ose ashtu si duhet: <em>A ke qanë meir me shnet?</em>',
+'moir':'mirë; me cilësi të mirë ose ashtu si duhet: <em>A ke qanë moir me shnet?</em>',
+'majrpo': 'mirëpo; lidhëz që lidh një fjali kundërshtore: <em>Un’ erdha ma vonë majrpo nana nuk më bërtjti.</em>',
+'marëj': 'mbaroj; e kryej plotësisht diçka, i jap fund: <em>Ene pak edhe e marëj at punë.</em>',
+'masanaj': 'pastaj; pas pak kohe, më vonë: <em>Shko çtahaj se masanaj dë jetë vonë.</em>',
+'masanëj': 'pastaj; pas pak kohe, më vonë etj: <em>Do e bëj masanëj atë punë.</em>',
+'mashën': 'kasolle; vend ku mbahet ushqimi i kafshëve dhe drutë: <em>Shko merr pak dru në mashën!</em>',
+'mashtrapë': 'gotë; enë e vogël dhe e thellë, zakonisht prej qelqi, që përdoret për të pirë ujë: <em>Ma mush një mashtrapë me ujë.</em>',
+'math': 'madh; që ka trup, vëllim, shtrirje a përmasa mbi mesataren ose mbi të tjerët: <em>Ai asht shumë i math.</em>',
+'mazun': 'i hidhëruar; që është i mërzitur ose i hidhëruar: <em>Ç’ke, or bir, si rrajn mazun?</em>',
+'mbarre': 'turp; ndjenjë turbullimi e hutimi: <em>U bë me mbarre nga pyetja që mori.</em>',
+'marre':'turp; ndjenjë turbullimi e hutimi: <em>U bë me marre nga pyetja që mori.</em>',
+'mçaj': 'fshij; heq pluhurat, lëmishtet e papastërti të tjera me fshesë, me leckë etj.: <em>Mçaje venin me netull.</em>',
+'mçef': 'fsheh; e vë diçka a dikë në një vend që të mos e shohin ose të mos e gjejnë të tjerët: <em>E mçefa, që të mos e gjente njeri.</em>',
+'meik': 'ai me të cilin kemi lidhur miqësi, që na vjen në shtëpi për vizitë, na ndihmon etj.: <em>E kum meik të mair.</em>',
+'maik':'ai me të cilin kemi lidhur miqësi, që na vjen në shtëpi për vizitë, na ndihmon etj.: <em>E kum maik të mair.</em>',
+'majk':'ai me të cilin kemi lidhur miqësi, që na vjen në shtëpi për vizitë, na ndihmon etj.: <em>E kum majk të mair.</em>',
+'mëjk': 'mik; një njeri me të cilin kemi miqësi, që na vjen në shtëpi për vizitë, na ndihmon etj: <em>A kush na paska ardh mëjk sët!</em>',
+'meleq': 'engjëll; i dërguar i Zotit, që përfytyrohet si njeri me krahë: <em>Më dul para sajsh ni meleqe.</em>',
+'menar': 'i mençur; që di shumë, i ditur: <em>Hiqet si njeri menar.</em>',
+'mene': 'mendje; aftësia për të menduar, për të njohur dhe për të pasqyruar botën: <em>E ka lën menja fare.</em>',
+'mesele': 'rrëfim; ndodhi që rrëfehet me gojë; histori e shkurtër: <em>S’di si u futa në kët’ mesele.</em>',
+'miç': 'miq; ata me të cilët kemi lidhur miqësi, që na vijnë në shtëpi për vizitë, na ndihmojnë etj.: <em>I kum miç të mair.</em>',
+'mide': 'oreks; dëshirë a ëndje për të ngrënë: <em>Ajo kishte mide të çuditshme.</em>',
+'mikeshë': 'krushk; nëna e nusës/dhëndërit ose secili nga të afërmit e tij/saj: <em>U ul para nesh sikur të ishte mikeshë.</em>',
+'mindere': 'divan; ndenjëse me shpinëz për 3 ose 4 persona: <em>Të gjithë u ulën në mindere.</em>',
+'mindil': 'shami; copë pëlhure katërkëndëshe për të fshirë hundët, djersën etj: <em>Të pëlqen ky mindili që bleva?</em>',
+'minere': 'mindere; shtrojë a dyshek i ngushtë që vihet zakonisht mbi një shtrat të ulët pranë vatrës për të ndenjur: <em>Shtraju në minere!</em>',
+'mixh': 'xhaxha; quajmë vëllain nga ana e babait: <em>Shkoi tek mixha për darkë.</em>',
+'mixhavëjc': 'nusja e xhaxhait: <em>Ka ardh për drekë mixhavëjca.</em>',
+'mojsër': 'misër; drithë me kërcell të fortë, që bën kallinj me shumë kokrra: <em>Kushari ishte qët me mojsër.</em>',
+'mrena': 'brenda; në vendin a në hapësirën që përfshijnë kufijtë e diçkaje, në pjesën e brendshme, në brendësi: <em>Fajti rraçët mrena se fillëj shëju.</em>',
+'mshele': 'mbylle; <em>Mshele derën kur të dalësh.</em>',
+'mu': 'mua; përemri unë në rasën kallëzore apo dhanore: <em>Mu më kishin ftu në desëm.</em>',
+'mue': 'mua; përemri unë në rasën kallëzore apo dhanore: <em>Mue më kishin ftu në desëm.</em>',
+'mulla': 'barku; pjesë e trupit: <em>Asaj po i dhimte mulla.</em>',
+'mush': 'mbush; shtie diçka në një enë, në një arkë etj.: <em>Mushe mashtrapën qët me ujë.</em>',
+'mutaf': 'mbulesë leshi; <em>Kali i majr njifet nën mutaf.</em>',
+'mutëj': 'dybek; havan druri për të rrahur orizin ose grurin; tundësi i qumështit: <em>A e tunde mutëjnin për sët?</em>',
+'mutfak': 'kuzhinë; vendi i vogël që përdoret për gatim: <em>Shko ha në mutfak!</em>',
+'nagazh': 'punë që kërkon shumë mund: <em>Kjë punë asht shumë nagazh.</em>',
+'nal': 'ndal; ndërpres ecjen, lëvizjen etj.: <em>Sa më thkate, u nala në ven.</em>',
+'nanë': 'nënë; gruaja kundrejt fëmijëve të vet: <em>Hallall të qoftë qumshti i nanës!</em>',
+'nebet': 'rojë; detyrë për të ruajtur dikë a diçka: <em>Paske fillu punë si nebet?</em>',
+'neçez': 'kurnac; njeri dorështrënguar: <em>Sa nerçez si asht, si del xha prej dëre!</em>',
+'netull': 'fshehsë; përdorëse me melekuqe, me fije bimësh të tjera a sintetike ose me degë të holla shkurreshqë shërben për të fshirë truallin, dyshemenë etj.: <em>Mçaje venin me fshehsë.</em>',
+'ngjoj': 'dëgjoj; kap ose kam aftësinë a mundësinë të kap me anë të veshit tingujt, zërat e zhurmat: <em>Ngjoj shumë majr..</em>',
+'nixë': 'flokë bore; borë e imët që bie lehtë: <em>Sët gjith ditën ka ra veç nixë.</em>',
+'nrajshi': 'ndryshe; në mënyrë tjetër: <em>Un’ e disha nrajshi këtë histori.</em>',
+'nurr': 'njeri i fjalëve të rënda; që përdor ofendime: <em>Ai asht një nurr se gjithnjë na bën të çeshim.</em>',
+'nja': 'një; numri i parë në vargun e numrave të plotë, numri 1: <em>Veç ni nxans kishte ardh në klasë.</em>',
+'njaft': 'mjaft; aq sa duhet, sa mjafton: kur i thua dikujt të ndalojë diçka: <em>Njaft fële!</em>',
+'njeft': 'mjaft; aq sa duhet, sa mjafton: kur i thua dikujt të ndalojë diçka: <em>Njeft fële!</em>',
+'njalt': 'mjaltë; lëng i trashë e shumë i ëmbël, që bëjnë bletët me nektarin e luleve: <em>Fëjti pak njalt çajit!</em>',
+'njelt':'mjaltë; lëng i trashë e shumë i ëmbël, që bëjnë bletët me nektarin e luleve: <em>Fëjti pak njelt çajit!</em>',
+'njëf': 'njoh; e di se kush është, marr vesh si është dhe ç’veti a tipare ka: <em>A e njef Filan Fistekun?</em>',
+'njekërr': 'mjekër; pjesa e poshtme e fytyrës së njeriut nën gojë: <em>Hiqe njekrrën!</em>',
+'njëll': 'njollë; një vend i vogël me ngjyrë të ndryshme nga pjesa tjetër e sipërfaqes, pullë: <em>E paske bë fanellën qët njëlla.</em>',
+'njëm': 'njomë; që ka lagështi, i njomur: <em>Toka ishte e njëm hala.</em>',
+'njëni': 'njëri; një që veçohet nga disa të tjerë të të njëjtit lloj: <em>Njëni erdh në luft’ pa grikhollën me vete.</em>',
+'njer': 'njëherë; shumë kohë më parë në të shkuarë, dikur: <em>Njer bën vaki kjë xha.</em>',
+'o': 'është; ndodhet diku ose duke bërë diçka: <em>Mos i fël ashtu se o njeri i majr.</em>',
+'ograde': 'tokë; copë toke pas shtëpisë: <em>Shko merr na dy palixhane në ograde.</em>',
+'oshaf': 'hoshf; 1. pemë (zakonisht kumbull) e thërë në diell: <em>Sa oshaf të majra qëkan!</em> 2. (fig) njeri thatanik e i fishkur: <em>Ishte bë oshaf!</em>',
+'pagure': 'shishe; ene e vogël prej alumini ose plastike, me gryke të ngushtë: <em>Mushi gjithë paguret me ujë!</em>',
+'paj': 'pi; gëlltis diçka të lëngshme: <em>Dë naj xha për t’paj?</em>',
+'palare': 'qer; sofër e vogël prej dërrase, ku hollohen petët për byrek etj: <em>Na u thaj palareja duke bë birekun.</em>',
+'palixhane': 'domate; perime njëvjeçre, që bën kokrra të mëdha, të buta e të kuqe kur piqen: <em>Janë bërë shumë palixhanet këtë vit.</em>',
+'parmendë': 'plug; vegël bujqësore për të punuar tokën prej druri, që tërhiqet nga kafshë: <em>Parmenda po na bën shumë punë.</em>',
+'penxhere': 'dritare; një kornizë me xham që rri hapur ose mbyllur, e vënë në mur: <em>Hape penxheren se u bë pak vapë.</em>',
+'përjeshta': 'përjashta; në vendin a në hapësirën që nuk është brenda kufijve të përcaktuar: <em>Shkova përjesht me pa shokt.</em>',
+'perlap': 'i vogli i gomarit; <em>Dje lindi perlapi ne ahër.</em>',
+'petka': 'veshje, ndërresa; rroba, veshje: <em>Ishte vesh me petka të reja.</em>',
+'pilef': 'pilaf; oriz i zier në ujë a në lëng mishi: <em>Sonte ka pilef për darkë.</em>',
+'pill': 'pyll; sipërfaqe e madhe toke me pemë të dendura dhe shkurre: <em>Shkova për të mbledhë dru në pill.</em>',
+'pjak': 'plak; burrë i vjetër në moshë: <em>Takova ni pjak të mençun.</em>',
+'pjep': 'plep; dru i lartë i vendeve me lagështirë, me trung të drejtë e me gjethe si zemër: <em>U bëftë sa ni pjep!</em>',
+'pjët': 'plot; një gjë e mbushur aq sa zë, deri në buzë: <em>Kova ishte pjët me rrush.</em>',
+'pjot':'plot; një gjë e mbushur aq sa zë, deri në buzë: <em>Kova ishte pjot me rrush.</em>',
+'pod': 'dysheme; pjesa e poshtme e një dhome ose hapësire: <em>Podi është bërë me dru, po ka fillu me u prish.</em>',
+'podis': 'përzë; dëboj a largoj me forcë dike nga një vend i caktuar: <em>Podis pulat nga ara e mbjellë.</em>',
+'postat': 'lodhur; kur nuk ke fuqi/energji për të bërë diçka: <em>Gjyshi im ësht postat shumë.</em>',
+'prajsh': 'prish; kur dëmton ose shkatërron diçka: <em>Na u prajsh makina n’mes të rrugjës.</em>',
+'prëjsh':'prish; kur dëmton ose shkatërron diçka: <em>Na u prëjsh makina ne mes të rrugjës.</em>',
+'pranon': 'perëndon; ulet e fshihet prapa horizontit (për diellin): <em>Hec ma shpejt se po pranon dilli.</em>',
+'pri': 'prej; së bashku me një emër a me një përemër tregon: lëndën nga e cila është bërë diçka: <em>Kjë asht çantë pri likure.</em>',
+'pubtesha': 'kokoshka/ pupagjel; kokërr misri e pjekur, që ka plasur dhe është hapur shumë: <em>Ishallë bëjmë pubtesha sone!</em>',
+'pulic': 'mbajtëse enësh; vend ku lihen enët për të ndenjur ose tharë: <em>Vëri enët një për një në pulic.</em>',
+'puren': 'ferrë e madhe; shkurre të ndryshme të egra me shumë degë e me gjemba: <em>Kujdes kur të kalëjsh purenin!</em>',
+'qak': 'plak; njeri i vjetër në moshë: <em>Kishte vdekur qaku që takum dje.</em>',
+'qanz': 'plëndës; organ i brendshëm te kafshët ripërtypëse, që shërben për tretjen e ushqimit: <em>Nana bëni paç me qanzin e kecit.</em>',
+'Qas': 'plas; bëj që të shpërthejë me forcë e me zhurmë një lëndë: <em>Qasi lufta mes Ukrainës dhe Rusisë.</em>',
+'qes':'plas; bëj që të shpërthejë me forcë e me zhurmë një lëndë: <em>Qesi lufta mes Ukrainës dhe Rusisë.</em>',
+'qeh': 'pleh; bajga, bimë të kalbëzuara etj., që rrisin pjellorinë e tokës: <em>Vjen erë e keqe prej qehut.</em>',
+'qek': 'pjek; vë një ushqim në furrë ose mbi zjarr, që të bëhet për të ngrënë: <em>Keku u qek, shtrojeni tavolinën.</em>',
+'qek': 'plak; njeri i vjetër në moshë: <em>Kishte vdekur qeku që takum dje.</em>',
+'qeka': 'takohem; ndesh dikë diku dhe përshëndetem: <em>U qeka me tezen në rrugë.</em>',
+'qep': 'plep; dru i lartë i vendeve me lagështirë, me trung të drejtpërdrejtë e me gjethe si zemër: <em>Qepi ishte tepër i lartë.</em>',
+'qergull': 'pjergull; hardhi që ngrihet mbi një shtrat a ngjitet nëpër drurë: <em>Qergulla qenka qët me rrush.</em>',
+'qershoj': 'qershi; kokrra të vogla, të kuqe a të verdha dhe me bërthamë, që rriten në pemë: <em>Qershojat qëkan bë të mira këtë vit.</em>',
+'qeshk': 'pjeshkë; kokrra të tulta ngjyrë portokalli në të kuqerremte, të mbuluara me push dhe me bërthamë: <em>Nesër do mbledhim qeshkat që janë bë.</em>',
+'qesht': 'plesht; parazit i vogël në ngjyrë kafe të errët, që kërcen, pickon e thith gjak: <em>Çeni ishte mush me qeshta.</em>',
+'qët': 'plot; një gjë e mbushur aq sa zë, deri në buzë: <em>Kova ishte qët me rrush.</em>',
+'qetër': 'tjeter; përdoret për të treguar një lloj tjetër të diçkaje: <em>Për qetër gjë e kisha fjelën.</em>',
+'quhër': 'kasolle kafshësh; vend strehimi për kafshët: <em>Gjyshi im përkujdeset çdo ditë për quhrin e tij.</em>',
+'rakoj': 'raki; pije alkoolike që nxirret nga rrushi apo diçka tjetër: <em>I kishte dal rakoj shumë e majr sivjet.</em>',
+'ranajt': 'rëndit, rreshtoj: <em>Ajo ranajti librat e vet.</em>',
+'ranë': 'rërë; grumbull kokrrizash të imta, që vijnë nga thërrmimi i gurëve dhe i shkëmbinjve: <em>Cullt po lujn me ranë n’Dri.</em>',
+'ravë': 'shteg; rrugë e ngushtë: <em>Për të shkuar atje, duhet të kalosh përmes një rave të gjatë.</em>',
+'razi': 'detyrim; marrëveshje apo detyrë të cilën një person duhet ta bëjë: <em>U bënë razi dhe ika.</em>',
+'resëm': 'fotografi; figura e diçkaje apo fytyra e një njeriu e riprodhuar në letër: <em>Pashë një resëm te vjetër ne mur.</em>',
+'rixha': 'lutje, kërkesë; i lutesh një njeriu për diçka: <em>I bëri rixha zotit që ta shpëtonte.</em>',
+'rizë': 'shami, peshqir; shami e bardhë të cilën e lidhin nënat në kokë: <em>Nana mante gjithnjë një rizë të bardhë në kraje.</em>',
+'sabeh': 'sabah; koha kur dielli shfaqet në horizont: <em>Do të hikim para sabahut.</em>',
+'saber': 'durim; aftësia për të qenë i duruar: <em>Bëj sabër.</em>',
+'safoj': 'safi; i papërzier me diçka tjetër, i thjeshtë: <em>Ma bëj ni kafe safoj.</em>',
+'safaj': 'safi; i papërzier me diçka tjetër, i thjeshtë: <em>Ma bëj ni kafe safaj.</em>',
+'sardi': 'çarçaf; mbulesë pëlhure që shtrohet mbi dyshek ose i vihet jorganit a batanijes në anën e brendshme: <em>Palosi sarditë dhe leni maj krevat.</em>',
+'satac': 'sitë; enë me vrima për të kulluar ushqimin: <em>Kulloj me satac!</em>',
+'sëjll': 'sillë; e ngrëna e mesditës: <em>Mas pesë dakëjka dë shtrëjm sëjllën.</em>',
+'sekëlldis': 'sëkëlldis; i sjell sekëlldi; e hidhëroj, e brengos: <em>Na sekëlldisi kot sa për bela.</em>',
+'setre': 'setër; pjesa e sipërme e kostumit: <em>Gjishi vari setrën mas dere.</em>',
+'skuliç': 'qoshe; kënd, cep; vend që kufizohet nga dy anë: <em>Kishte pluhun në çdo skuliç.</em>',
+'soi': 'sy; organi i të parit te njeriu dhe te kafshët: <em>Të qeshin sojt!</em>',
+'sai': 'sy; organi i të parit te njeriu dhe te kafshët: <em>Të qeshin sajt!</em>',
+'supravojs': 'rregulloj; vë në rregull ose sjell përsëri në rregull diçka: <em>Mami më tha të supravojs shpojn.</em>',
+'shëi': 'shi; reshje që bie pika-pika: <em>Ka fillu me ra shëj.</em>',
+'shërvete': 'shami; copë pëlhure katërkëndëshe, e cila përdorej nga burrat dhe gratë për t’u zbukuruar: <em>Sa shervete të bukur paske!</em>',
+'shkam': '1. shkëmb; gur shumë i madh: <em>Hipëm majë atij shkamit për me pa fshatin.</em> 2. stol; ndenjëse e ulët dhe pa shpinëz: <em>Afroma pak shkamin se u lëdha.</em>',
+'shkëj': 'shkoj; lëviz me këmbë a me një mjet nga një vend në një tjetër: <em>Nuk dë shkëj në shkollë sët.</em>',
+'shkrem': 'plëndës; organ i brendshëm te kafshët ripërtypëse, që shërben për tretjen e ushqimit: <em>Nana bëni paç me shkrem.</em>',
+'shkrepse': 'shkrepëse; kuti me kunja të vegjël druri me një kokë me lëndë ndezëse për të shkrepur: <em>A ke naj shkrepse me ndez çkët çibuk?</em>',
+'shnosh': 'shëndosh;ka shëndet të mirë: <em>Ishte shnosh e majr.</em>',
+'shof': 'shikoj; i hedh sytë dikujt a diçkaje: <em>Nuk du ta shof ma at njeri.</em>',
+'shoj': 'lëshoj; e lë të bjerë nga lart poshtë, të varet lirisht ose të mbështetet mbi diçka: <em>Po shon lëpën në livadh për të ngrënë.</em>',
+'shëj':'lëshoj; e lë të bjerë nga lart poshtë, të varet lirisht ose të mbështetet mbi diçka: <em>Po shën lëpën në livadh për të ngrënë.</em>',
+'shpëj': 'shpoj; hap një vrimë tej e tej: <em>Ma shpëj gjishtin me gjilpan.</em>',
+'shpëjrt': 'shpirt; bota e brendshme e njeriut: <em>M’u gzu shpëjrti kur e pashë!</em>',
+'shpuret': 'sobë; pajisje për ngrohje a për gatim: <em>E paske të re kët shpuret.</em>',
+'taklloj': 'trokas; i bie derës, dritares etj.: <em>Taklloj disa herë, po se hapi kush.</em>',
+'tamaf': 'lakmi; dëshirë e madhe, për të pasur diçka ose dikë për vete: <em>Kishte tamaf të madh.</em>',
+'tapanxhë': 'lloj arme e vjetër: <em>Mori tapanxhën e dul prej konaku.</em>',
+'tarbihat': 'tabiat; zakon: <em>E paske bë tarbihat!</em>',
+'tëi': 'ti; tregon njeriun a sendin, të cilit i drejtohemi: <em>E ç’je një tëj!</em>',
+'tai': 'ti; tregon njeriun a sendin, të cilit i drejtohemi: <em>E ç’je një tai!</em>',
+'taj': 'ti; tregon njeriun a sendin, të cilit i drejtohemi: <em>E ç’je një taj!</em>',
+'tekhe': 'këtej; në këtë anë, në anën ku ndodhemi: <em>Hajde tekhe!</em>',
+'tëposht': 'poshtë; në lartësi të vogël nga toka ose nga një sipërfaqe tjetër në drejtimin pingul: <em>Shkoi tëposht.</em>',
+'tëqe': 'tutje; larg meje, atje tej: <em>Shko tëqe.</em>',
+'tërfoj': 'tërfil; barishte me gjethe të përbëra nga tri gjethëza, që mbillet si ushqim për bagëtinë: <em>Fusha ishte mush me tërfoj.</em>',
+'tërkujzë': '1. litar me lesh dhie: <em>E lidhi me tërkujzë.</em> 2. (fig) e bëj diçka më të madhe: <em>E bëne tërkujz tahaj.</em>',
+'tërma': 'lart; në largësi të madhe nga toka ose nga një sipërfaqe tjetër në drejtimin pingul: <em>Ec tërma.</em>',
+'tërnakop': 'kazmë; vegël e metaltë me bisht druri, që shërben për të gërmuar tokën: <em>E punoi gjithë venin me tërnakop.</em>',
+'tërqëte': 'lopatë; vegël dore që përdoret për të gërmuar ose mbledhur dhera: <em>E punëj gjithë venin me tërqëte.</em>',
+'tërkajk': 'fuqi; aftësia e njeriut për të bërë diçka: <em>I dha tërkajk tëposhtë.</em>',
+'tlin': 'gjalpë; yndyrë e trashë që nxirret duke rrahur qumështin e bagëtive: <em>Lyje bukën me tlin.</em>',
+'thëi': 'thoi; shtresë e hollë mbrojtëse, që është e lidhur fort me mishin dhe që mbulon majat e gishtërinjve të duarve e të këmbëve të njeriut: <em>E gërvishti me thëj.</em>',
+'thëjka': 'thika; mjet i vogël me një presë të gjatë prej metali e me dorezë: <em>Prajte bukën me thëjk.</em>',
+'thajka':  'thika; mjet i vogël me një presë të gjatë prej metali e me dorezë: <em>Prajte bukën me thajk.</em>',
+'themra': 'thembër; pjesa e prapme e shputës së këmbës: <em>Kam vra themrën.</em>',
+'thënja': 'thinja; qime të zbardhura në flokë, në mjekër, në mustaqe etj.: <em>I kishin dalë pak thënja.</em>',
+'thanja': 'thinja; qime të zbardhura në flokë, në mjekër, në mustaqe etj.: <em>I kishin dalë pak thanja.</em>',
+'thum': 'thumb; pjesë e zgjatur dhe e fortë në fundin e barkut të disa kandrrave me të cilën ato të shpojnë: <em>Kujdes nga thumi i bjetës!</em>',
+'udute': 'zakone; rregull a normë në mënyrën e jetesës: <em>Ishte një familje me udute.</em>',
+'ufllagi': 'petës; shkop i hollë e i lëmuar për të holluar petët: <em>Hapi petat me ufllagi!</em>',
+'uftull': 'uthull; lëng i thartë që del nga tharmëtimi i lëngut të rrushit ose i pemëve të tjera: <em>Uftulla e fortë e prish kazanin.</em>',
+'ugrade': 'kopsht para shtëpisë: <em>Gjithë atë ugrade e ka mbjellë me lule.</em>',
+'ullumadhe': 'kurnac; dorështrënguar, që kursen tej masës: <em>Sa ullumadhe paska qenë!</em>',
+'ungju': 'ulu: <em>Ungju të fëlim njer mor gjel!</em>',
+'urdi': 'shumicë njerëzish: <em>Ishte bë urdi e madhe.</em>',
+'uxhak': 'oxhak; vendi në anë të një dhomë a në një ndërtesë, bashkë me pjesën e hapur deri mbi çati, ku ndizet zjarri dhe shkon tymi jashtë: <em>Pastroje najherë at’ uxhak!</em>',
+'va': 'ua; trajtë e shkurtër e bashkuar: <em>Va dhash juve librat.</em>',
+'vakëj': 'vaki; ndodhi, ngjarje: <em>Çish paska bë vakëj?</em>',
+'vakaj':'vaki; ndodhi, ngjarje: <em>Çish paska bë vakaj?</em>',
+'vakt': 'kohë; vazhdimi e kalimi i pandërprerë i minutave, i orëve, i ditëve etj: <em>I erdh vakti për t’u martu.</em>',
+'vazhdëj': 'vazhdoj; vijoj të bëj diçka: <em>Vazhdëj lëja.</em>',
+'vdër': 'borë; reshje me kristale të bardha: <em>Ra vdëra e parë.</em>',
+'vdesh': 'zhvesh; heq një rrobë nga trupi: <em>E vdeshi xhaketën shpejt.</em>',
+'vdeth': 'zbathur; pa këpucë e pa çorape: <em>Mos hec vdethun!</em>',
+'vegjël': 'vegël; mjet i thjeshtë dore për të bërë një punë: <em>M’i ep vegjlat e puns.</em>',
+'vëj': 'vaj; lëng i yndyrshëm që nxirret nga farat a nga kokrrat e disa bimëve: <em>Vëj ullini.</em>',
+'voj':'vaj; lëng i yndyrshëm që nxirret nga farat a nga kokrrat e disa bimëve: <em>Voj ullini.</em>',
+'vëjç': 'viç; pjella e lopës dhe e disa kafshëve të tjera deri në një vjeç: <em>Vëjç me lara.</em>',
+'vëjll': 'vjell; 1. nxjerr prej stomaku nga goja ushqimin a diçka tjetër: <em>Vëjlli fmija.</em> 2. (fig) flas shumë keq për dikë a për diçka: <em>Mos vëjll vner për mu!</em>',
+'ven': 'vend; sipërfaqe toke me veçori të caktuara fizike e gjeografike: <em>Ven malor.</em>',
+'venë': 'verë; pije alkolike, që nxirret zakonisht nga tharmëtimi i mushtit të rrushit: <em>Kjë qëka vënë e vjetër.</em>',
+'vergji': 'taksë për shtëpi: <em>Kjo asht vergji e randë!</em>',
+'veshtar': 'dëgjon mirë: <em>Plak veshta.</em>',
+'vëz': 'vozë; 1. enë e madhe, e rrumbullakët e me bark të gjerë: <em>Mushi një vëz me turshi.</em> 2. njeri i shëndoshë e me bark të madh: <em>Qëke bë si vëz!</em>',
+'vgjerr': '1. vdjerr; humb, nuk e ke më dikë a diçka dhe nuk e di ku është: <em>Kam vgjerr dhent në mal.</em> 2. djerr; tokë a arë që lihet pa u punuar për disa vjet: <em>E lanë arën vgjerr.</em>',
+'vilat': 'krahinë; pjesë e një vendi, me kusht e karakteristika të veçanta klimaterike: <em>Vilat malor.</em>',
+'vjetra': 'viça; pjella e lopës në numrin shumës, deri në një vjeç: <em>Sa vjetra ke në ahër?</em>',
+'vjetun': 'dash njëvjecar: <em>Këtë vjetunin do e marr unë.</em>',
+'vlla': 'vëlla; djali kundrejt fëmijëve të tjerë me prindër të njëjtë: <em>Ki asht vllai im.</em>',
+'voc': 'djalë; fëmij mashkull deri në moshën e pjekurisë: <em>Ngjom mu, or voc!</em>',
+'voe': 'vezë; kokërr me lëvozhgë, që e pjellin femrat e shpendëve, të peshqve, të disa zvarranikëve etj: <em>Sa voe bën pulat sët?</em>',
+'vorr': 'varr; gropë ku vihet i vdekuri: <em>Qënkë bë si me del prej vorri!</em>',
+'vrajk': 'shpejt; duke nxitur, në mënyrë të shpejtë: <em>Sa vrajk na i qaki kto nuset e reja!</em>',
+'vrëjk': 'shpejt; duke nxitur, në mënyrë të shpejtë: <em>Sa vrëjk na i qaki kto nuset e reja!</em>',
+'xha': 'gjë; diçka lëndore e botës jo të gjallë, që rroket nga shqisat si e veçantë: <em>Jë çdë xha si shkëlçen asht fjëri.</em>',
+'xhade': 'rrugë; rrip toke i rrahur a i shtruar për të kaluar njerëzit, kafshët dhe mjetet e transportit: <em>Dil në xhade se erdha!</em>',
+'xhahuze': 'shpirtzezë; që ua do të keqen a u bën keq të tjerëve: <em>Asht ni xhahuze ajë…</em>',
+'xhaja': 'bagëtitë; kafshë ose kandërr: <em>Duhet me ushqy xhan e xhell.</em>',
+'xhel': 'gjel; mashkulli i pulës, këndes: <em>Ngrehu se knëj xheli!</em>',
+'xhemat': 'shumë njerëz të mbledhur në varrim: <em>Kishte shumë xhemat.</em>',
+'xhevap': 'përgjigje; fjalët që i thuhen a i shkruhen dikujt që na është drejtuar: <em>Sun i ap xhevap çtahaj.</em>',
+'xhifshek': 'hapësirë boshe: <em>Më shkëj kama xhifshek.</em>',
+'xhinaf': 'gjynah; gabim, faj, diçka e keqe a e dëmshme: <em>Sa xhinaf si je!</em>',
+'xhishi': 'gjyshi; i ati i babait ose i nënës: <em>Un e du shumë xhishin.</em>',
+'xhisht': 'gisht; secili prej pesë zgjatimeve në fund të dorës ose të këmbës së njeriut: <em>Sa xhishta të vëgjël paske!</em>',
+'xhumlek': 'këmishë; veshje e lehtë prej pëlhure, me mëngë, që mbërthehet përpara e mbahet në pjesën e sipërme të trupit: <em>Qëka shumë i bukur ki xhumlek!</em>',
+'za': 'zë; tingull, afërësi tingujsh, që përftohen në grykën e njeriut a të kafshëve nga dridhjet e tejzave: <em>Mos e ngrej zanin!</em>',
+'zagjer': 'zagar; 1. qen gjahu: <em>Ku e gjete kët zagjer?</em> 2. (fig) ai që sillet udhëve: <em>Pse shkon si zagjer?</em>',
+'zaif': 'sëmurë: <em>Sa zaif si qëke!</em>',
+'zakëjt': 'frikacak; që ka shumë frikë: <em>Sa zakëjt si je!</em>',
+'zan': 'zënë; jo i lirë, jo i ngeshëm: <em>I kam durt e zana me qeshka.</em>',
+'zbudallajk': 'budallallos; e bëj budalla, e shastis: <em>Fort qëke zbudallëjk tëj!</em>',
+'zemrek': 'zemberek; rrip i hollë prej çeliku i mbledhur si rreth, që vë në lëvizje orën ose një mekanizëm tjetër: <em>Sahatit t’mixhës i ishte prajsh zemreku.</em>',
+'zërraxhëj': 'zorran; (fig) që bën lajka për të përfituar: <em>Sa zërraxhëj bre si qëke!</em>',
+'zgjebsh': '(fig) me ngjyrim përçmues; i fëlliqur, i ndyrë: <em>Mos u bëj zgjebsh, po pastrohu!</em>',
+'ziliçer': 'ziliqar; që i ka zili të tjerët: <em>Çar ziliçeri paska qan’ ki!</em>',
+'zimbil': 'traste; qese e madhe zakonisht prej pëlhure të trashë: <em>Merre at zimbilin si lash unë.</em>',
+'zindan': 'hall/vështirësi; gjendje e vështirë kur njeriu vuan nga mungesa e diçkaje etj.: <em>Jam në zindan prej borgjit që duhet me la.</em>',
+'zok': 'zog; kafshë e vogël kërbishtore, e mbuluar me pupla, me sqep të brirtë, që shumohet me vezë: <em>Sa zok i vëgël!</em>',
+            };
+
+            // Kontrollo nëse fjala ekziston në fjalor
+            if (dictionary[query]) {
+                resultDiv.innerHTML = '<strong>' + query.charAt(0).toUpperCase() + query.slice(1) + ':</strong> ' + dictionary[query];
+            } else {
+                resultDiv.innerHTML = 'Nuk u gjet asnjë rezultat për: <strong>' + query + '</strong>';
+            }
+        }
+
+        // Lejon kërkimin me butonin "Enter"
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('keyup', (event) => {
+                if (event.key === 'Enter') {
+                    searchWord();
+                }
+            });
+        });
+    </script>
+     <div style="position: absolute; top: 83px; right: 1px;">
+        <a href="multimedia.html" style="color: white; text-decoration: none; font-size: 1em; background: #4169e1; padding: 5px 15px; border-radius: 5px;">
+            Album me video
+        </a>
+    </div>
+
+    <div style="position: absolute; top: 83px; left: 1px;">
+        <a href="formatipdf.html" style="color: white; text-decoration: none; font-size: 1em; background: #395bc0; padding: 5px 15px; border-radius: 5px;">
+           <b>PDF</b>
+        </a>
+    </div>
+
+</head>
+<body>
+    <header>
+        <b>DIBRA NË FJALË</b>
+    </header>
+    <main>
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Kërko një fjalë...">
+            <button onclick="searchWord()">Kërko</button>
+        </div>
+        <div id="result" class="result"></div>
+        <div class="image-section">
+        </div>    
+        <div class="opinion-box" onclick="window.location.href='mendime.html'">
+            Jep një mendim...
+        </div>
+
+    </main>
+    <footer>
+        &copy; 2025 Dibra në fjalë
+    </footer>
+
+</body>
+</html>
+
+
+
+
